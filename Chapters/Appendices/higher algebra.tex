@@ -1,0 +1,1205 @@
+\section{\textit{Hors d'oeuvres}: Classical homological algebra} \label{section: homological_algebra}
+    \begin{convention}
+        Throughout this section we will be working with ordinary $1$-categories, not $(\infty, 1)$-categories. However, we will still try to phrase as many definitions and proofs in a manner that would generalise more or less trivially to the setting of $\infty$-categories.
+    \end{convention}
+
+    \subsection{Additive categories, abelian categories, everything in between and beyond!}
+        \subsubsection{Abelian categories: the backdrop for homological algebra}
+            \paragraph{Zero objects and zero morphisms; (co)kernels}
+                Let us first perform some analysis of zero objects and (finite) biproducts in general categories wherein they exist. First up is the definition:
+                \begin{definition}[Zero objects] \label{def: zero_objects} \index{Zero objects}
+                    A \textbf{zero object} (in any category) is an object satisfying both the universal properties of an initial and terminal object.
+                \end{definition}
+                
+                \todo[inline]{Add info about zero morphisms}
+                
+                \begin{definition}[(Co)kernels] \label{def: (co)kernels} \index{Kernels} \index{Cokernels}
+                    Within a category with zero objects $0$, the \textbf{kernel} of an arrow $f: x \to y$, should it exist, shall be the following pulback:
+                        $$
+                            \begin{tikzcd}
+                            	{\ker f} & 0 \\
+                            	x & y
+                            	\arrow["\1", from=1-2, to=2-2]
+                            	\arrow["f", from=2-1, to=2-2]
+                            	\arrow[from=1-1, to=2-1]
+                            	\arrow[from=1-1, to=1-2]
+                            	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+                            \end{tikzcd}
+                        $$
+                    Dually, the \textbf{cokernel} of an arrow $f: x \to y$ (and again, should it exist) shall be the following pushout:
+                        $$
+                            \begin{tikzcd}
+                            	x & y \\
+                            	0 & {\coker f}
+                            	\arrow["f", from=1-1, to=1-2]
+                            	\arrow["\2"', from=1-1, to=2-1]
+                            	\arrow[from=1-2, to=2-2]
+                            	\arrow[from=2-1, to=2-2]
+                            	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+                            \end{tikzcd}
+                        $$
+                \end{definition}
+                \begin{remark}[(Co)kernels as (co)equalisers] \label{remark: (co)kernels_as_(co)equalisers}
+                    Let $x, y$ be objects of some category with zero objects $0$. Thanks to the universal property of zero objects, namely thanks to the fact that there would always exist unique morphisms $\1: 0 \to y$ and $\2: x \to 0$ making the following diagram commute:
+                        $$
+                            \begin{tikzcd}
+                            	{} & 0 \\
+                            	x & y
+                            	\arrow["{0_{x, y}}"', from=2-1, to=2-2, dashed]
+                            	\arrow["\1", from=1-2, to=2-2]
+                            	\arrow["\2", from=2-1, to=1-2]
+                            \end{tikzcd}
+                        $$
+                    Every such diagram and every arrow $f: x \to y$ thus give rise a pair of parallel arrows, namely $f, 0_{x, y}: x \toto y$. Now, the claim is that the limit/equaliser of this diagram is precisely $\ker f$. To prove this, simply consider the following commutative diagram:
+                        $$
+                            \begin{tikzcd}
+                            	& {\ker f} & x \\
+                            	& x & y \\
+                            	0
+                            	\arrow["f", from=1-3, to=2-3]
+                            	\arrow[from=1-2, to=1-3]
+                            	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-2, to=2-3]
+                            	\arrow["{0_{x, y}}", from=2-2, to=2-3]
+                            	\arrow[from=1-2, to=2-2]
+                            	\arrow["\1"{description}, from=3-1, to=2-2]
+                            	\arrow["\1"', from=3-1, to=2-3]
+                            	\arrow["\2"', from=1-2, to=3-1]
+                            \end{tikzcd}
+                        $$
+                \end{remark}
+            
+            \paragraph{Biproducts}
+                Another notion that will come up often in tandem with that of zero objects is the idea of biproducts:
+                \begin{definition}[Biproducts] \label{def: biproducts} \index{Biproducts}
+                    A \textbf{biproduct} (in any category) is an object satisfying both the universal properties of a product and a coproduct.
+                \end{definition}
+                \begin{remark}
+                    Note that zero objects and biproducts are particular instances of so-called \textbf{bilimits}. 
+                \end{remark}
+                
+                We note that having zero objects is not a sufficient condition for having (finite) biproducts. Consider the following example:
+                \begin{example}[Having zero objects does not imply having having biproducts] \label{example: zero_objects_do_not_imply_biproducts}
+                    In the category ${}^{\{*\}/}\Top$ of \textit{pointed} topological spaces and continuous functions, the identity $\id_{\{*\}}: \{*\} \to \{*\}$ on the one-point space $\{*\}$ (i.e. the distinguished point of the one-point space) is a zero object. Clearly, $\id_{\{*\}}: \{*\} \to \{*\}$ is the initial object in ${}^{\{*\}/}\Top$. As for why it is the final object in ${}^{\{*\}/}\Top$, consider firstly the following commutative triangle in $\Top$ (i.e. the following morphism from $x: \{*\} \to X$ to $\id_{\{*\}}: \{*\} \to \{*\}$):
+                        $$
+                            \begin{tikzcd}
+                            	\{*\} \\
+                            	X & \{*\}
+                            	\arrow["x"', from=1-1, to=2-1]
+                            	\arrow["{\id_{\{*\}}}", from=1-1, to=2-2]
+                            	\arrow["{!}", from=2-1, to=2-2]
+                            \end{tikzcd}
+                        $$
+                    wherein $X$ is any (pointed) topological space; note that any point $x \in X$ naturally induces a continuous map $x: \{*\} \to X$; also, there exists, for all spaces $X$, a natural and unique surjection $!: X \to \{*\}$ sending every element of $X$ to the unique element of $\{*\}$ (it is indeed continuous, since the preimages of the two open subsets $\varnothing, \{*\} \in \Ouv(\{*\})$ under $!: X \to \{*\}$, being $\varnothing$ and $X$ respectively, are both open in $X$). This diagram tells you that there exists a natural and unique morphism from any $(x: \{x\} \to X) \in {}^{\{*\}/}\Top$ to $\id_{\pt}: \pt \to \pt$, or in other words, that $\id_{\{*\}}: \{*\} \to \{*\}$ is a terminal object in ${}^{\{*\}/}\Top$. 
+                \end{example}
+                Now, as pathological as this example might be, and as much as it might scare us, fear not, for ${}^{\{*\}/}\Top$ is not $\Ab$-enriched (simply note how there is not a good way to define the addition of two continuous morphisms with common domain and codomain)! Therefore, the example above should not concern us too much. In fact, being $\Ab$-enriched is a rather strong assumption, as we shall see through the following proposition:
+                \begin{proposition}[Criterion for having enough finite biporducts] \label{prop: finite_biproduct_criterion}
+                    Let $\calA$ be an $\Ab$-enriched category with zero objects $0$ and all finite products. Then $\calA$ has all finite biproducts. 
+                \end{proposition}
+                    \begin{proof}
+                        As biproducts satisfy both the universal properties of products and coproducts, it shall suffice to show, that for all $x, y \in \calA$, $x \x y$ satisfies the universal property of a coproduct. This entails showing that there exist morphisms $x \to x \x y$ and $y \to x \x y$, and that the following diagram (wherein $x \x y \to z$ is unique) commutes for all $x \to z$ and $y \to z$:
+                            $$
+                                \begin{tikzcd}
+                                                                        & y \arrow[rdd, bend left] \arrow[d]                &   \\
+                                    x \arrow[rrd, bend right] \arrow[r] & x \x y \arrow[rd, "\exists!" description, dashed] &   \\
+                                                                        &                                                   & z
+                                \end{tikzcd}
+                            $$
+                            \begin{enumerate}
+                                \item By symmetry, it suffices to show that there exists a morphism $x \to x \x y$. 
+                                
+                                Now, by the universal property of zero objects (which implies that there exist unique morphisms $\2: x \to 0$ and $\1: 0 \to y$) the following diagram commutes:
+                                    $$
+                                        \begin{tikzcd}
+                                                                                               & 0 \arrow[d, "\1"] \\
+                                            x \arrow[r, "{0_{x, y}}"', dashed] \arrow[ru, "\2"] & y                
+                                        \end{tikzcd}
+                                    $$
+                                From this, one infers that there exists the following diagram:
+                                    $$
+                                        \begin{tikzcd}
+                                            x \arrow[r, "{0_{x, y}}", dashed] \arrow[d, "\id_x"'] & y \\
+                                            x                                                     &  
+                                        \end{tikzcd}
+                                    $$
+                                which fits naturally into the following commutative diagram, thanks to the universal property of products:
+                                    $$
+                                        \begin{tikzcd}
+                                        	x & y \\
+                                        	x & {x \x y} & y \\
+                                        	& x
+                                        	\arrow["{0_{x, y}}", from=1-1, to=1-2]
+                                        	\arrow["{\id_x}"', from=1-1, to=2-1]
+                                        	\arrow[from=2-2, to=3-2]
+                                        	\arrow[from=2-2, to=2-3]
+                                        	\arrow["{\id_x}"', from=2-1, to=3-2]
+                                        	\arrow["{\id_y}", from=1-2, to=2-3]
+                                        	\arrow[dashed, from=1-1, to=2-2]
+                                        \end{tikzcd}
+                                    $$
+                                We have thus found a morphism  $x \to x \x y$.
+                                \item Now that we know there are natural maps $x \to x \x y \ot y$, consider a diagram of the following form, wherein $z$ is arbitrary:
+                                    $$
+                                        \begin{tikzcd}
+                                                                                                    & y \arrow[d] \arrow[rdd, bend left] &   \\
+                                            x \arrow[r] \arrow[rrd, bend right] & x \x y \arrow[rd, "\exists ?" description, dashed]   &   \\
+                                                                                                    &                                                      & z
+                                        \end{tikzcd}
+                                    $$
+                                If we can show that the dashed arrow exists, then by the universal property of coproducts, we will have shown that $x \x y$ is a coproduct in $\calA$. To that end, note that every diagram $j_1: x \to z \ot y: j_2$ embeds naturally into the following commutative diagram, thanks to the universal property of products:
+                                    $$
+                                        \begin{tikzcd}
+                                            x \x y \arrow[d, "\pr_1"', dashed] \arrow[r, "\pr_2", dashed] & y \arrow[d, "j_2"] \\
+                                            x \arrow[r, "j_1"]                                            & z                 
+                                        \end{tikzcd}
+                                    $$
+                                Thanks to the crucial assumption that $\calA$ is $\Ab$-enriched, the diagram above induces the following morphism:
+                                    $$j_1 \circ \pr_1 + j_2 \circ \pr_2: x \x y \to z$$
+                                We now claim that $\varphi := j_1 \circ \pr_1 + j_2 \circ \pr_2$ is the sought-for dashed arrow from the first diagram. To show that this is indeed the case, let us simply check that the resulting diagram actually commutes. For this, denote by $\iota_1: x \to x \x y \ot y: \iota_2$ the natural maps and consider the following:
+                                    $$
+                                        \begin{aligned}
+                                            \varphi \circ \iota_1 & = (j_1 \circ \pr_1 + j_2 \circ \pr_2) \circ \iota_1
+                                            \\
+                                            & = j_1 \circ \pr_1 \circ \iota_1 + j_2 \circ \pr_2 \circ \iota_1
+                                            \\
+                                            & = j_1 \circ \id_x + j_2 \circ 0_{x, y}
+                                            \\
+                                            & = j_1 + 0_{x, x \x y}
+                                            \\
+                                            & = j_1
+                                        \end{aligned}
+                                    $$
+                                wherein $\pr_1 \circ \iota_1 = \id_x$ and $\pr_2 \circ \iota_1 = 0_{x, y}$ because we have shown in the previous step that the following diagram commutes:
+                                    $$
+                                        \begin{tikzcd}
+                                            x \arrow[rd, "j_1" description] \arrow[rrd, "{0_{x, y}}", bend left] \arrow[rdd, "\id_x"', bend right] &                                               &   \\
+                                                                                                                                                   & x \x y \arrow[r, "\pr_2"] \arrow[d, "\pr_1"'] & y \\
+                                                                                                                                                   & x                                             &  
+                                        \end{tikzcd}
+                                    $$
+                                Likewise, one can show that:
+                                    $$\varphi \circ \iota_2 = j_2$$
+                                There thus exists $\varphi: x \x y \to z$ making the following diagram commute:
+                                    $$
+                                        \begin{tikzcd}
+                                                                                                   & y \arrow[d, "\iota_2"] \arrow[rdd, "j_2", bend left] &   \\
+                                            x \arrow[r, "\iota_1"] \arrow[rrd, "j_1"', bend right] & x \x y \arrow[rd, "\exists \varphi"]                 &   \\
+                                                                                                   &                                                      & z
+                                        \end{tikzcd}
+                                    $$
+                                \item Lastly, to show that the map $\varphi$ as above is unique, suppose to the contrary that it is not, i.e. there exists $\psi \not = \varphi$ making the diagram:
+                                    $$
+                                        \begin{tikzcd}
+                                                                                                   & y \arrow[d, "\iota_2"] \arrow[rdd, "j_2", bend left] &   \\
+                                            x \arrow[r, "\iota_1"] \arrow[rrd, "j_1"', bend right] & x \x y \arrow[rd, "\psi"]                 &   \\
+                                                                                                   &                                                      & z
+                                        \end{tikzcd}
+                                    $$
+                                commute. The existence of such an arrow would imply that:
+                                    $$\psi \circ \iota_1 = j_1 = \varphi \circ \iota_1$$
+                                and hence:
+                                    $$(\psi - \varphi) \circ \iota_1 = \psi \circ \iota_1 - \varphi \circ \iota_1 = j_1 - j_1 = 0_{x, z}$$
+                                and because $\iota_1 \not = 0$, it must be the case that $\psi - \varphi = 0_{x, x \x y}$; thus, we have shown that $\psi = \varphi$, which contradicts the assumption that $\psi \not = \varphi$. The arrow $\varphi: x \x y \to z$ from the previous step is thus unique.
+                            \end{enumerate}
+                        We have therefore shown that every binary product in $\calA$ satisfies the universal property of a coproduct, which implies (via some elementary induction) that $\calA$ has all finite biproducts.
+                    \end{proof}
+                
+            \paragraph{Homological categories}
+                \begin{definition}[Additive and abelian categories] \label{def: AB_categories} \index{Additive categories} \index{Abelian categories}
+                    An \textbf{additive category} is an $\Ab$-enriched category with zero objects and finite biproducts.
+                    
+                    This notion is subsumed by those of:
+                        \begin{enumerate}
+                            \item \textbf{$\Ab$-enriched categories},
+                            \item \textbf{pre-additive categories} (i.e. categories with zero objects),
+                            \item \textbf{pseudo-abelian categories} (i.e. categories wherein all idempotent endomorphisms admit kernels and cokernels),
+                        \end{enumerate}
+                    and itself generalises the following notions:
+                        \begin{enumerate}
+                            \item \textbf{pre-abelian/$AB1$ categories} (i.e. additive categories admitting all kernels and all cokernels),
+                            \item \textbf{abelian/$AB2$ categories} (i.e. pre-abelian categories wherein every monomorphism is a kernel and every epimorphism is a cokernel).
+                        \end{enumerate}
+                    The hierachy continues with even stronger notions:
+                        \begin{enumerate}
+                            \item An \textbf{$AB3$-category} is an $AB2$-category with all coproducts; dually, an \textbf{$AB3^*$-category} is an $AB2$-category with all products.
+                            \item An \textbf{$AB4$-category} is an $AB3$-category wherein coproducts and monomorphisms commute; dually, an \textbf{$AB4^*$-category} is one wherein products and epimorphisms commute.
+                            \item An \textbf{$AB5$-category} is an $AB3$-category wherein filtered colimits of exact sequences (i.e. chain complexes with vanishing homologies) remain exact; dually, an \textbf{$AB5^*$-category} is one wherein filtered limits of exact sequences remain exact.
+                            
+                            Additionally, a so-called \textbf{Grothendieck category} is a presentable $AB5$-category.
+                            \item Lastly, an \textbf{$AB6$-category} is an $AB3$-category wherein products and filtered colimits commute; dually an \textbf{$AB6^*$-category} is one wherein coproducts commute with filtered limits.
+                        \end{enumerate}
+                \end{definition}
+                
+                \begin{proposition}[$AB1$-categories are finitely (co)complete] \label{prop: AB1_categories_are_finitely_(co)complete}
+                    Any $AB1$-category $\calA$ is simultaneously finitely complete and finitely cocomplete.
+                \end{proposition}
+                    \begin{proof}
+                        This is a straightforward consequence of the fact that one can construct finite (co)limits from finite pullbacks/pushouts and terminal/initial objects, and that having pullbacks/pushouts and terminal/initial objects implies having (co)products.
+                    \end{proof}
+                
+                \begin{example}[Additive categories and so on] \label{examples: AB_categories}
+                    \noindent
+                    \begin{itemize}
+                        \item \textbf{(Modules):}
+                        \item \textbf{(Non-unital rings):}
+                        \item \textbf{(A counter-example: free modules over PIDs that are not fields):}
+                        \item \textbf{(An additive category that is not $AB2$):} Let $K$ be a locally compact complete (ultra)metric field (e.g. $\R, \bbC$, or finite extensions of $\Q_p$ or $\F_p(\!(t)\!)$, for some prime $p$) and consider the category $K\Ban$ of $K$-Banach spaces (i.e. $K$-vector spaces topologically complete with respect to a norm induced by the (ultra)metric on $K$) and bounded continuous $K$-linear transformations. We claim that epimorphisms in this category can fail to be cokernels, and hence $K\Ban$ fails to be $AB2$.
+                        
+                        First of all, for the sake of completeness, let us note that $K\Ban$ is $\Ab$-enriched: the enrichment is is given by the usual addition of continuous linear transformation, which preserves boundedness thereof, since either:
+                            $$\|\varphi + \psi\| \leq \|\varphi\| + \|\psi\|$$
+                        or:
+                            $$\|\varphi + \psi\| \leq \max\{\|\varphi\|, \|\psi\|\}$$
+                        and both right-hand sides are finite by the boundedness assumption on the morphisms $\varphi, \psi$ in $K\Ban$.
+                        
+                        Now, let $Z$ be a compact subspace of $K$ (e.g. compact intervals in $\R$, compact balls in $\bbC$, or $\Z_p$ in $\Q_p$) and consider the Banach $K$-algebra $C^0(X)$ of continuous $K$-valued functions on $Z$; this Banach $K$-algebra is a dense $K$-subalgebra of $L^1(Z)$, the Banach $K$-algebra of absolutely integrable $K$-valued functions on $Z$.
+                        \item \textbf{(Sheaves of modules):} Let $\E$ be a topos and let $R$ be a ring object internal to $\E$. Then, the category $R\mod$ of left-$R$-modules will be a Grothendieck category, and likewise with $\mod_R$ and $R\mod_R$.
+                    \end{itemize}
+                \end{example}
+                
+                \begin{example}[An important example: chain complexes] \label{example: chain_complexes}
+                    In a category $\calA$ with zero objects $0$, a \textbf{chain complex}\footnote{You might also have heard of so-called \textbf{cochain complexes}: these are nothing but chain complexes in the opposite category.} is a diagram of shape $\Z^{\op}$:
+                        $$
+                            \begin{tikzcd}
+                            	{\cdots} & \bullet & \bullet & \bullet & {\cdots}
+                            	\arrow[from=1-1, to=1-2]
+                            	\arrow["{\del_n}", from=1-2, to=1-3]
+                            	\arrow["{\del_{n + 1}}", from=1-3, to=1-4]
+                            	\arrow[from=1-4, to=1-5]
+                            \end{tikzcd}
+                        $$
+                    wherein, crucially, one has\footnote{Note the homological grading!}:
+                        $$\del_n \circ \del_{n + 1} = 0$$
+                    for all $n \in \Z$. Morphisms between chain complexes are the obvious commutative diagrams, and their composition is induced by the composition rule in $\calA$.
+                    
+                    Now, the claim is that should $\calA$ be an $AB2$-category, so is $\Ch(\calA)$, the category of chain complexes in $\calA$. For this, let us first check if $\Ch(\calA)$ is actually additive. Indeed it has a zero object, namely the zero complex:
+                        $$
+                            \begin{tikzcd}
+                            	{...} & 0 & 0 & 0 & {...}
+                            	\arrow[from=1-1, to=1-2]
+                            	\arrow[from=1-2, to=1-3]
+                            	\arrow[from=1-3, to=1-4]
+                            	\arrow[from=1-4, to=1-5]
+                            \end{tikzcd}
+                        $$
+                    because thanks to the universal property of zero objects, there exists a morphism from this comlex to any chain complex, and likewise, from any chain complex to this complex:
+                        $$
+                            \begin{tikzcd}
+                            	\cdots & 0 & 0 & 0 & \cdots \\
+                            	{...} & \bullet & \bullet & \bullet & {...} \\
+                            	\cdots & 0 & 0 & 0 & \cdots
+                            	\arrow[from=2-1, to=2-2]
+                            	\arrow["{\del_n}", from=2-2, to=2-3]
+                            	\arrow["{\del_{n + 1}}", from=2-3, to=2-4]
+                            	\arrow[from=2-4, to=2-5]
+                            	\arrow[from=1-2, to=2-2]
+                            	\arrow[from=2-2, to=3-2]
+                            	\arrow[from=1-3, to=2-3]
+                            	\arrow[from=2-3, to=3-3]
+                            	\arrow[from=1-4, to=2-4]
+                            	\arrow[from=2-4, to=3-4]
+                            	\arrow[from=1-2, to=1-3]
+                            	\arrow[from=1-3, to=1-4]
+                            	\arrow[from=3-2, to=3-3]
+                            	\arrow[from=3-3, to=3-4]
+                            	\arrow[from=1-1, to=1-2]
+                            	\arrow[from=1-4, to=1-5]
+                            	\arrow[from=3-1, to=3-2]
+                            	\arrow[from=3-4, to=3-5]
+                            \end{tikzcd}
+                        $$
+                    $\Ch(\calA)$ also has all finite biproducts; to see why, simply consider diagrams of chain complexes of the following kind:
+                        $$
+                            \begin{tikzcd}
+                            	\cdots & {x'_i} & {x_i} & {x''_i} & \cdots \\
+                            	{\cdots} & {\bigoplus_{i \in I'} x_i'} & {\bigoplus_{i \in I} x_i} & {\bigoplus_{i \in I''} x_i''} & {\cdots} \\
+                            	\cdots & {x_j'} & {x_i} & {x_j''} & \cdots
+                            	\arrow[from=2-1, to=2-2]
+                            	\arrow[from=2-2, to=2-3]
+                            	\arrow[from=2-3, to=2-4]
+                            	\arrow[from=2-4, to=2-5]
+                            	\arrow[from=1-2, to=2-2]
+                            	\arrow[from=2-2, to=3-2]
+                            	\arrow[from=1-3, to=2-3]
+                            	\arrow[from=2-3, to=3-3]
+                            	\arrow[from=1-4, to=2-4]
+                            	\arrow[from=2-4, to=3-4]
+                            	\arrow[from=1-2, to=1-3]
+                            	\arrow[from=1-3, to=1-4]
+                            	\arrow[from=3-2, to=3-3]
+                            	\arrow[from=3-3, to=3-4]
+                            	\arrow[from=1-1, to=1-2]
+                            	\arrow[from=1-4, to=1-5]
+                            	\arrow[from=3-1, to=3-2]
+                            	\arrow[from=3-4, to=3-5]
+                            \end{tikzcd}
+                        $$
+                    wherein $I', I, I''$ are finite sets of indices, and $\bigoplus$ denotes (finite) biproducts.
+                \end{example}
+        
+        \subsubsection{Epic-monic factorisation and diagram-chasing}
+        
+        \subsubsection{Injectives and projectives; Lazard's Theorem}
+            For now, see \href{https://mathoverflow.net/questions/46541/how-to-introduce-notions-of-flat-projective-and-free-modules}{\underline{this MO thread}} for motivation.
+        
+            \begin{definition}[Projective and injective objects] \label{def: projective_and_injective_objects} \index{Projective objects} \index{Injective objects}
+                An object $p$ in a category $\C$ is said to be \textbf{projective} if and only if the functor $\C(p, -): \C \to \Sets$ preserves epimorphisms. Dually, an object $i$ is said to be \textbf{injective} if and only if it is a projective object of $\C^{\op}$; in other words, if and only if the functor $\C(-, i): \C^{\op} \to \Sets$ send monomorphisms in $\C$ (i.e. epimorphisms in $\C^{\op}$) to epimorphisms in $\Sets$.
+            \end{definition}
+            
+            An important property of projective/injective objects is that they have a so-called left/right-lifting property against epimorphisms. 
+            \begin{proposition}[Lifting property of projectives and injectives] \label{prop: projectives_and_injectives_lifting_property}
+                \noindent
+                \begin{itemize}
+                    \item\textbf{(Projectives admit left-liftings):} An object $p$ of some category $\C$ is projective if and only if for any diagram in $\C$ of the following form:
+                        $$
+                            \begin{tikzcd}
+                            	x && p \\
+                            	& y
+                            	\arrow["\pi"', two heads, from=1-1, to=2-2]
+                            	\arrow["\psi", from=1-3, to=2-2]
+                            \end{tikzcd}
+                        $$
+                    there exists an arrow $\varphi: p \to x$ (which need not be unique!) making it commutative:
+                        $$
+                            \begin{tikzcd}
+                            	x && p \\
+                            	& y
+                            	\arrow["\pi"', two heads, from=1-1, to=2-2]
+                            	\arrow["\psi", from=1-3, to=2-2]
+                            	\arrow["{\exists \varphi}"', dashed, from=1-3, to=1-1]
+                            \end{tikzcd}
+                        $$
+                    \item \textbf{(Injectives admit right-liftings):} Dually, an object $i \in \C$ is injective if and only if for every diagram in $\C$ of the following form:
+                        $$
+                            \begin{tikzcd}
+                            	x && i \\
+                            	& y
+                            	\arrow["\iota", tail, from=2-2, to=1-1]
+                            	\arrow["\psi"', from=2-2, to=1-3]
+                            \end{tikzcd}
+                        $$
+                    there exists an arrow $\varphi: x \to i$ (which again, need not be unique!) making it commutative:
+                        $$
+                            \begin{tikzcd}
+                            	x && i \\
+                            	& y
+                            	\arrow["\iota", tail, from=2-2, to=1-1]
+                            	\arrow["\psi"', from=2-2, to=1-3]
+                            	\arrow["{\exists \varphi}", dashed, from=1-1, to=1-3]
+                            \end{tikzcd}
+                        $$
+                \end{itemize}
+            \end{proposition}
+                \begin{proof}
+                    Since the two assertions are dual to one another, it suffices to only prove one. We choose to prove the first assertion.
+                        \begin{enumerate}
+                            \item Assume first of all that $p$ is projective. By definition, $p$ is projetive if and only if $\C(p, -)$ preserve epimorphisms. Thus, by applying the functor $\C(p, -): \C \to \Sets$ to any epimorphism $\pi: x \to y$, one shal obtain a surjective function:
+                                $$\C(p, \pi): \C(p, x) \to \C(p, y)$$
+                            This tells us that:
+                                $$\forall \psi \in \C(p, y): \exists \varphi \in \C(p, x): \C(p, \pi)(\varphi) = \psi \iff \pi \circ \varphi = \psi$$
+                            which is precisely that there exists an arrow $\varphi: p \to x$ fitting into the following commutative diagram:
+                                $$
+                                    \begin{tikzcd}
+                                    	x && p \\
+                                    	& y
+                                    	\arrow["\pi"', two heads, from=1-1, to=2-2]
+                                    	\arrow["\psi", from=1-3, to=2-2]
+                                    	\arrow["{\exists \varphi}"', dashed, from=1-3, to=1-1]
+                                    \end{tikzcd}
+                                $$
+                            \item Conversely, suppose that for any diagram in $\C$ of the following form:
+                                $$
+                                    \begin{tikzcd}
+                                    	x && p \\
+                                    	& y
+                                    	\arrow["\pi"', two heads, from=1-1, to=2-2]
+                                    	\arrow["\psi", from=1-3, to=2-2]
+                                    \end{tikzcd}
+                                $$
+                            there exists an arrow $\varphi: p \to x$ making it commutative:
+                                $$
+                                    \begin{tikzcd}
+                                    	x && p \\
+                                    	& y
+                                    	\arrow["\pi"', two heads, from=1-1, to=2-2]
+                                    	\arrow["\psi", from=1-3, to=2-2]
+                                    	\arrow["{\exists \varphi}"', dashed, from=1-3, to=1-1]
+                                    \end{tikzcd}
+                                $$
+                            This tells us that $\C(p, \pi): \C(p, x) \to \C(p, y)$ is surjective, and since $\pi: x \to y$ is an epimorphism by assumption, this shows that $p$ is projective by definition.
+                        \end{enumerate}
+                \end{proof}
+            
+            Projective and injective objects also interact in interesting manners with adjunctions. 
+            \begin{proposition}[Projective and injective objects under adjoint functors] \label{prop: projectives_and_injectives_under_adjoints}
+                If:
+                    $$
+                        \begin{tikzcd}
+                        	\C & \D
+                        	\arrow[""{name=0, anchor=center, inner sep=0}, "R"', shift right=2, from=1-1, to=1-2]
+                        	\arrow[""{name=1, anchor=center, inner sep=0}, "L"', shift right=2, from=1-2, to=1-1]
+                        	\arrow["\dashv"{anchor=center, rotate=-90}, draw=none, from=1, to=0]
+                        \end{tikzcd}
+                    $$
+                is an adjunction such that $R$ preserves epimorphisms then $L$ shall preserve projective objects; dually, should $L$ preserve monomorphisms, then $R$ shall preserve injective objects. 
+            \end{proposition}
+                \begin{proof}
+                    The two assertions are dual to one another, so it shall suffice to only prove one; we choose the first.
+                    
+                    First of all, note that $L$ preserves projectives if and only if for any projective object $q \in \D$, the functors $\D(q, -): \D \to \Sets$ and $\C(Lq, -): \C \to \Sets$ both preserve epimorphisms. Now, because $L$ is left-adjoint to $R$, there exists the following natural isomorphism for all $y \in \D$:
+                        $$\C(Ly, -) \cong \D(y, R(-))$$
+                    and because $R: \C \to \D$ preserves epimorphisms, for any epimorphism $\pi: p \to x$ and any \textit{projective} object $q \in \D$ one obtain a surjection:
+                        $$\D(q, R\pi): \D(q, Rp) \to \D(q, Rx)$$
+                    which induces a surjection
+                        $$\C(Lq, \pi): \C(Lq, p) \to \C(Lq, x)$$
+                    This clearly shows that $Lq$ is a projective object of $\C$. The left-adjoint $L: \D \to \C$ thus preserves projective objects whenever its right-adjoint $R: \C \to \D$ preserves epimorphisms.
+                \end{proof}
+            This proposition gives rise to some rather useful corollaries. However, there is a catch\footnote{As is always the case when things are too good to be true.}: we will have to take a hard look at the Axiom of Choice\footnote{(again)}.
+            \begin{remark}[All sets are projective] \label{remark: all_sets_are_projective}
+                The Axiom of Choice reads:
+                    \begin{center}
+                        \say{\textit{Every surjective function admits a section.}}
+                    \end{center}
+                which is to say, to any surjective function $\pi: X \to Y$ one can associate a function $\sigma: Y \to X$ (called a \textbf{section}) such that $\pi \circ \sigma = \id_Y$. As it turns out, this axiom is equivalent to the assertion that every object of $\Sets$ is projective. 
+                
+                To see why this is the case, assume first of all that the Axiom of Choice holds. This implies, tautologically, that for every surjection $\pi: X \to Y$, there exists a function $\sigma: Y \to X$ making the following diagram commute:
+                    $$
+                        \begin{tikzcd}
+                        	X & Y \\
+                        	Y
+                        	\arrow["{\forall \pi}"', two heads, from=1-1, to=2-1]
+                        	\arrow["{\id_Y}", from=1-2, to=2-1]
+                        	\arrow["{\exists \sigma}"', from=1-2, to=1-1]
+                        \end{tikzcd}
+                    $$
+                Now, note that one can extend the diagram above with any function $\psi: P \to Y$ in the following manner:
+                    $$
+                        \begin{tikzcd}
+                        	X & Y \\
+                        	Y & P
+                        	\arrow["{\forall \pi}"', two heads, from=1-1, to=2-1]
+                        	\arrow["{\id_Y}"{description}, from=1-2, to=2-1]
+                        	\arrow["{\exists \sigma}"', from=1-2, to=1-1]
+                        	\arrow["\psi"', from=2-2, to=1-2]
+                        	\arrow["\psi", from=2-2, to=2-1]
+                        \end{tikzcd}
+                    $$
+                We thus obtain the following commutative diagram:
+                    $$
+                        \begin{tikzcd}
+                        	X & P \\
+                        	Y
+                        	\arrow["{\forall \pi}"', two heads, from=1-1, to=2-1]
+                        	\arrow["{\forall \psi}", from=1-2, to=2-1]
+                        	\arrow["{\exists \varphi = \sigma \circ \psi}"', from=1-2, to=1-1]
+                        \end{tikzcd}
+                    $$
+                which, according to proposition \ref{prop: projectives_and_injectives_lifting_property}, implies that $P$ is a projective object of $\Sets$.
+                
+                Now, let us assume that every set $P$ is projective. Then, by proposition \ref{prop: projectives_and_injectives_lifting_property}, for all surjections $\pi: X \to Y$ and all functions $\psi: P \to Y$, there exists a function $\sigma: P \to X$ fitting into the following commutative diagram:
+                    $$
+                        \begin{tikzcd}
+                        	X && P \\
+                        	& Y
+                        	\arrow["\forall \pi"', two heads, from=1-1, to=2-2]
+                        	\arrow["\forall \psi", from=1-3, to=2-2]
+                        	\arrow["{\exists \sigma}"', from=1-3, to=1-1]
+                        \end{tikzcd}
+                    $$
+                By letting $\psi: P \to Y$ be $\id_Y: Y \to Y$, one thus can exploit the commutativity of the diagram to obtain a section $\sigma: Y \to X$ of the surjection $\pi: X \to Y$. Thus, every surjection has a section, and this is precisely the Axiom of Choice. 
+            \end{remark}
+            \begin{corollary}[\textbf{\textcolor{red}{\underline{IMPORTANT}}} Tensor products, freeness, and projectiveness] \label{coro: tensor_products_freeness_and_projectiveness}
+                \noindent
+                \begin{itemize}
+                    \item \textbf{(Free modules are projective):} Let $R$ be a ring, which is not necessarily commutative. Then, if we are to assume that the Axiom of Choice holds, then free modules will always be projective.
+                    \item \textbf{(Tensor products of projective modules):} Fix a base rings $R$ and $S$ (which need not be commutative) along with a projective $(R, S)$-bimodule $P$. Then, for all projective right-$R$-modules $Q$, the tensor product $Q \tensor_R P$ shall be a projective right-$S$-module.
+                \end{itemize}
+            \end{corollary}
+                \begin{proof}
+                    \noindent
+                    \begin{itemize}
+                        \item \textbf{(Free modules are projective):} Free left-$R$-modules arise through the following adjunction:
+                            $$
+                                \begin{tikzcd}
+                                	{R\mod} & \Sets
+                                	\arrow[""{name=0, anchor=center, inner sep=0}, "\oblv"', shift right=2, from=1-1, to=1-2]
+                                	\arrow[""{name=1, anchor=center, inner sep=0}, "{{}_RR^{\oplus (-)}}"', shift right=2, from=1-2, to=1-1]
+                                	\arrow["\dashv"{anchor=center, rotate=-90}, draw=none, from=1, to=0]
+                                \end{tikzcd}
+                            $$
+                        where $\oblv: R\mod \to \Sets$ is the forgetful sending modules to their underlying sets. It is not hard to see that the forgetful functor $\oblv$ preserves epimorphisms, and since it is a right-adjoint, one can apply proposition \ref{prop: projectives_and_injectives_under_adjoints} to deduce that the free construction ${}_RR^{\oplus (-)}: \Sets \to R\mod$ must preserve projective objects. But, by remark \ref{remark: all_sets_are_projective}, we know that should we assume the Axiom of Choice then all objects of $\Sets$ shall be projective, and so every free module (each of which takes the form ${}_RR^{\oplus X}$ for some set $X$) must also be projective as an object of $R\mod$.
+                        \item \textbf{(Tensor products of projective modules):} Recall first of all that there is the following adjunction:
+                            $$
+                               \begin{tikzcd}
+                            	{\mod_S} & {\mod_R}
+                            	\arrow[""{name=0, anchor=center, inner sep=0}, "{- \tensor_R P}"', shift right=2, from=1-2, to=1-1]
+                            	\arrow[""{name=1, anchor=center, inner sep=0}, "{\mod_S(P, -)}"', shift right=2, from=1-1, to=1-2]
+                            	\arrow["\dashv"{anchor=center, rotate=-90}, draw=none, from=0, to=1]
+                            \end{tikzcd}
+                            $$
+                        Since $P$ is projective, the right-adjoint $\mod_S(P, -)$ preserves epimorphisms by definition, and by proposition \ref{prop: projectives_and_injectives_lifting_property}, this means that the left-adjoint $- \tensor_R P$ preserves projectiveness. Thus, for any projective right-$R$-module $Q$, the tensor product $Q \tensor_R P$ shall be a projective right-$R$-module, as claimed.
+                    \end{itemize}
+                \end{proof}
+            
+            \begin{lemma}[Epimorphisms into projectives split] \label{lemma: epimorphisms_into_projectives_split}
+            
+            \end{lemma}
+                \begin{proof}
+                    
+                \end{proof}
+            \begin{proposition}[Projective modules are direct summands of free modules] \label{prop: projective_modules_are_direct_summands_of_free_modules}
+                This is \cite[Proposition VIII.6.4]{chapter0}.
+                    
+                Let $R$ be a commutative ring. Then, a given $R$-module $P$ is projective if and only if it is there exists a free $R$-module $E$ and an auxiliary $R$-module $N$ such that $E \cong P \oplus N$.
+            \end{proposition}
+                \begin{proof}
+                    Since $R$ is fixed, let us write $\Hom(-, -)$ in place of $R\mod(-, -)$. 
+                    \begin{enumerate}
+                        \item Assume firstly that $P$ is projective and let $\pi: R^{\oplus X} \to P$ be some presentation of $P$. Such a presentation induces a canonical short exact sequence:
+                            $$
+                                \begin{tikzcd}
+                                	0 & {\ker \pi} & {R^{\oplus X}} & P & 0
+                                	\arrow[from=1-1, to=1-2]
+                                	\arrow[tail, from=1-2, to=1-3]
+                                	\arrow["\pi", two heads, from=1-3, to=1-4]
+                                	\arrow[from=1-4, to=1-5]
+                                \end{tikzcd}
+                            $$
+                        It thus suffices to show that this sequence splits. 
+                        
+                        For this, 
+                        \item Conversely, assume that there exists a free $R$-module $E$ and an auxiliary $R$-module $N$ such that $E \cong P \oplus N$. $E$ is free, so in particular, it is projective. The functor $\Hom(E, -)$ thus preserves epimorphisms. However, one also has:
+                            $$\Hom(E, -) \cong \Hom(P \oplus N, -) \cong \Hom(P, -) \oplus \Hom(N, -)$$
+                        and because $N$ is arbitrary, $\Hom(P, -)$ must therefore preserve epimorphisms. This means that $P$ is necessarily projective. 
+                    \end{enumerate}
+                \end{proof}
+            \begin{corollary}
+                Let $R$ be a ring (again, not necessarily commutative). Then, any projective left/right-$R$-module is necessarily flat over $R$ (in the appropriate sense). 
+            \end{corollary}
+                \begin{proof}
+                    
+                \end{proof}
+            
+            Now that we have established a few properties that projective/injective objects (and in particular, those of projective/injective modules) should have, let us consider some concrete examples. 
+            \begin{example}[Projective modules] \label{example: projetive_modules}
+                \noindent
+                \begin{itemize}
+                    \item \textbf{(A few projective modules):} 
+                        \begin{itemize}
+                            \item Vector spaces over field or over division rings (i.e. skew-fields) are \textit{a priori} free, so they are projective.
+                            \item Any projective module over a PID is free. 
+                            \item Let $R$ and $S$ be rings and recall that the zero ring $0$ is a terminal in the category of rings. Then, as $R \x S$-modules, the rings $0 \x S$ and $R \x 0$ are both projective modules that are not free. 
+                            \item Any principal ideal of a Dedekind is always a projective module that is not free. 
+                        \end{itemize}
+                    \item \textbf{(Flat modules that are not projective):} Thanks to Bass' Theorem, we know that a place to look for these sorts of modules are over non-perfect commutative rings\footnote{A perfect commutative ring is a ring of characteristic $p$ (for some prime $p$) over which the Frobenius endomorphism is invertible.} (flatness implies projectiveness if and only if the base ring is perfect). So for instance one can consider:
+                        \begin{itemize}
+                            \item $\F_p(\!(t)\!)$ as a $\F_p[\![t]\!]$-module.
+                            \item The $\m$-adic completion of any non-Artinian local ring $(R, \m)$ of characteristic $p$.
+                        \end{itemize}
+                    There are also examples over characteristic $0$, such as $\Q$ as a $\Z$-module.
+                \end{itemize}
+            \end{example}
+            \begin{example}[Injective modules] \label{example: injective_modules}
+                \noindent
+                \begin{itemize}
+                    \item Any commutative ring is injective as a module over itself. The same statement is not true for noncommutative rings. 
+                    \item $\Q/\Z$ is injective in $\Ab$. 
+                    \item For any non-zero integer $n$, the abelian group $\Z/n\Z$ is not injective as an object of $\Ab$. 
+                \end{itemize}
+            \end{example}
+            \begin{example}[Objects that are both projective and injective]
+                Every object of the terminal category $\pt$ and every object of the empty/intial category $\varnothing$ is trivially projective and injective simultaneously. 
+            \end{example}
+            
+        \begin{definition}[Enough projectives and enough injectives] \label{def: enough_projectives_enough_injectives} \index{Projective objects! enough} \index{Injective objects! enough}
+            A category $\C$ is said to be in possession of \textbf{enough projectives} if and only if any object $x$ thereof admits an epimorphism $\pi: p \to x$ from some projective object $p \in \C$. Dually, a category $\C$ is said to have \textbf{enough injectives} if and only if $\C^{\op}$ has enough injectives, or in other words, if and only if every object $x \in \C$ admits a monomorphism $\iota: x \to i$ into some injective object $i$.
+            
+            The epimorphisms/monomorphisms attached to objects of a category with enough projectives/injectives are usually known as \textbf{augmentation maps}.
+        \end{definition}
+        
+        \todo[inline]{Add Lazard's Theorem}
+    
+    \subsection{Derived categories}
+        \subsubsection{Localisation of categories}
+        
+        \subsubsection{Exact functors; derived functors}
+        
+        \subsubsection{Quasi-isomorphisms}
+    
+    \subsection{Fundamental theorems of homological algebra}
+        \subsubsection{The Freyd-Mitchell Embedding Theorem}
+        
+        \subsubsection{The Universal Coefficient Theorem and The K\"unneth Theorem}
+
+\section{Homotopical algebra} \label{section: homotopical_algebra}
+    \subsection{Triangulated and stable \texorpdfstring{$\infty$}{}-categories}
+        \subsubsection{Triangles and stability}
+            \begin{definition}[Stable $\infty$-categories] \label{def: stable_infinity_categories} \index{$\infty$-categories! stable}
+                \noindent
+                \begin{enumerate}
+                    \item \textbf{(Triangles):} Let $\C$ be an $\infty$-category with zero objects $0$ (i.e. let $\C$ be a so-called \textbf{pointed category}). A \textbf{triangle} in $\C$ is just a commutative square of the form:
+                        $$
+                            \begin{tikzcd}
+                            	x & y \\
+                            	0 & z
+                            	\arrow[from=1-1, to=2-1]
+                            	\arrow[from=1-1, to=1-2]
+                            	\arrow[from=1-2, to=2-2]
+                            	\arrow[from=2-1, to=2-2]
+                            \end{tikzcd}
+                        $$
+                    If it is in addition a pullback square (i.e. the limit of a diagram $\simp[1] \x \simp[1] \to \C$), then it will be commonly referred to as a \textbf{fibre sequence}; the dual notion (i.e. a colimit of a diagram $\simp[1] \x \simp[1] \to \C$) is that of \textbf{cofibre sequences}; one speaks also of \textbf{(co)fibres} of morphisms, which are nothing more than pullbacks/pushouts along the canonical morphism from/to the zero object $0$ to the domain of said morphisms (e.g. in the situation above, should the square be a pullback square then it will be a fibre of $y \to z$). Thanks to the universal property of zero objects, one can image triangles in $\C$ as diagrams of shape $\simp[1] \x \simp[1]$.
+                    \item \textbf{(Stable $\infty$-categories):} An $\infty$-category $\C$ is \textbf{stable} if and only if:
+                        \begin{enumerate}
+                            \item it is pointed,
+                            \item all morphisms in $\C$ admit fibres and cofibres, and
+                            \item a triangle in $\C$ is a fibre sequence if and only if it is also a cofibre sequence.
+                        \end{enumerate}
+                \end{enumerate}
+            \end{definition}
+            \begin{example}
+                \noindent
+                \begin{itemize}
+                    \item The $\infty$-category of spectra (sequences of topological spaces indexed by $\N$ along with loopings and suspensions) is stable.
+                    \item As we shall eventually see, the derived category of an abelian category is stable as an $\infty$-category.
+                \end{itemize}
+            \end{example}
+            
+            \begin{definition}[Triangulated $\infty$-categories] \label{def: triangulated_infinity_categories} \index{$\infty$-categories! triangulated}
+                \noindent
+                \begin{enumerate}
+                    \item \textbf{(Distinguished triangles):} Within a pointed $\infty$-category, we define \textbf{distinguished triangles} to be a cofibre sequence (cf. definition \ref{def: stable_infinity_categories}):
+                        $$
+                            \begin{tikzcd}
+                            	x & y \\
+                            	0 & z
+                            	\arrow[from=1-1, to=2-1]
+                            	\arrow[from=1-1, to=1-2]
+                            	\arrow[from=1-2, to=2-2]
+                            	\arrow[from=2-1, to=2-2]
+                            	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+                            \end{tikzcd}
+                        $$
+                    which admits an extension by another cofibre sequence $y \to z \to \suspension x$ into:
+                        $$
+                            \begin{tikzcd}
+                            	x & y & 0 \\
+                            	0 & z & {\suspension x}
+                            	\arrow[from=1-1, to=2-1]
+                            	\arrow[from=1-1, to=1-2]
+                            	\arrow[from=1-2, to=2-2]
+                            	\arrow[from=2-1, to=2-2]
+                            	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+                            	\arrow[from=2-2, to=2-3]
+                            	\arrow[from=1-2, to=1-3]
+                            	\arrow[from=1-3, to=2-3]
+                            	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-3, to=1-2]
+                            \end{tikzcd}
+                        $$
+                    Note that by the universal property of zero objects, giving an extension in the above fashion the same as giving a right-exact functor (called a \textbf{suspension functor}):
+                        $$\suspension: \C^{\simp[1] \x \simp[1]} \to \C^{\simp[2] \x \simp[1]}$$
+                    that pastes onto a triangle:
+                        $$
+                            \begin{tikzcd}
+                            	x & y \\
+                            	0 & z
+                            	\arrow[from=1-1, to=2-1]
+                            	\arrow[from=1-1, to=1-2]
+                            	\arrow[from=1-2, to=2-2]
+                            	\arrow[from=2-1, to=2-2]
+                            \end{tikzcd}
+                        $$
+                    a so-called right-extension via pushing out along the canonical map $y \to 0$:
+                        $$
+                            \begin{tikzcd}
+                            	x & y & 0 \\
+                            	0 & z & w
+                            	\arrow[from=1-1, to=2-1]
+                            	\arrow[from=1-1, to=1-2]
+                            	\arrow[from=1-2, to=2-2]
+                            	\arrow[from=2-1, to=2-2]
+                            	\arrow[from=1-2, to=1-3]
+                            	\arrow[from=1-3, to=2-3]
+                            	\arrow[from=2-2, to=2-3]
+                            	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-3, to=1-2]
+                            \end{tikzcd}
+                        $$
+                    \item \textbf{(Triangulated categories):} A pointed $\infty$-category admitting all cofibre sequences will naturally have all distinguish triangles, and thus shall be called \textbf{triangulated}.
+                \end{enumerate}
+            \end{definition}
+            \begin{remark}[Elementary properties of triangulated $\infty$-categories] \label{remark: elementary_properties_of_triangulated_categories} \index{$\infty$-categories! triangulated! properties} \index{$\infty$-categories! stable! properties}
+                \noindent
+                \begin{enumerate}
+                    \item Clearly, stable $\infty$-categories are triangulated.
+                    \item It is not hard to see how the opposite of a stable $\infty$-category is necessarily stable too. The opposite of a triangulated $\infty$-category is not necessary triangulated; this happens if and only if the $\infty$-category is stable.
+                    \item 
+                        \begin{enumerate}
+                            \item Full subcategories of triangulated $\infty$-categories that are stable under taking cofibre sequences are triangulated themselves; these subcategories are known as \textbf{stable $\infty$-subcategories}. So-called \textbf{Serre $\infty$-subcategories} - stable subcategories of abelian $\infty$-categories (which are \textit{a priori} stable) - are special cases of these stable $\infty$-categories. These Serre $\infty$-subcategories are themselves special cases of (left-)exact reflective localisations of stable $\infty$-categories, which are stable $\infty$-categories whose associated fully faithful embeddings into their ambient stbale $\infty$-categories admit (left-)exact left-adjoints.
+                            \item Let $\C$ be a stable $\infty$-category and let $\C_0$ be a triangulated full $\infty$-subcategory. $\C_0$ is thus also stable.
+                        \end{enumerate}
+                    \item If $K$ is a simplicial set and $\C$ is any stable $\infty$-category, then the functor category $\C^K$ is also stable.
+                \end{enumerate}
+            \end{remark}
+            
+            \begin{proposition}[Stability criteria for pointed $\infty$-categories] \label{prop: stability_criteria_for_pointed_infinity_categories} \index{$\infty$-categories! stable! criteria}
+                A pointed $\infty$-category $\C$ is stable if and only if the following equivalent criteria are satisfied:
+                    \begin{enumerate}
+                        \item $\C$ is finitely complete and finitely cocomplete.
+                        \item Finite pushouts and pullbakcs in $\C$ coincide (i.e. $\C$ admits all finite fibred biproducts).
+                    \end{enumerate}
+            \end{proposition}
+                \begin{proof}
+                    \noindent
+                    \begin{enumerate}
+                        \item \textbf{(Proof of equivalence):} 
+                            \begin{enumerate}
+                                \item Assume that $\C$ is finitely complete and finitely cocomplete. This implies that pushouts and pullbacks exist in $\C$, and hence $\C$ admits all cofibre and fibre sequences. It thus remains to show that cofibres and fibres in $\C$ are the same; one can then make use of the universal property of zero objects and base change to show the existence of finite fibred biproducts. However, note that again thanks to the universal property of zero objects, the following triangle is simultaneously a fibre sequence:
+                                    $$
+                                        \begin{tikzcd}
+                                        	0 & x \\
+                                        	0 & x
+                                        	\arrow[from=1-1, to=2-1]
+                                        	\arrow[from=1-2, to=2-2]
+                                        	\arrow[from=2-1, to=2-2]
+                                        	\arrow[from=1-1, to=1-2]
+                                        	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+                                        \end{tikzcd}
+                                    $$
+                                and the following a cofibre sequence:
+                                    $$
+                                        \begin{tikzcd}
+                                        	x & 0 \\
+                                        	x & 0
+                                        	\arrow[from=1-2, to=2-2]
+                                        	\arrow[from=2-1, to=2-2]
+                                        	\arrow[from=1-1, to=2-1]
+                                        	\arrow[from=1-1, to=1-2]
+                                        	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+                                        \end{tikzcd}
+                                    $$
+                                for all objects $x$ of $\C$; one can them simply base change to see how cofibre and fibre sequences must coincide.
+                                \item Conversely, assume that all finite pushouts and pullbacks in $\C$ coincide. This in particular tells us that cofibre sequences and fibre sequences are the same, and also, that one can build monos and epis using the zero object $0$ using biproducts of the following form:
+                                    $$
+                                        \begin{tikzcd}
+                                        	x & 0 \\
+                                        	y & z
+                                        	\arrow[from=1-2, to=2-2]
+                                        	\arrow[two heads, from=2-1, to=2-2]
+                                        	\arrow[tail, from=1-1, to=2-1]
+                                        	\arrow[from=1-1, to=1-2]
+                                        	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+                                        	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+                                        \end{tikzcd}
+                                    $$
+                            \end{enumerate}
+                        \item \textbf{(Proof of stability):} By definition \ref{def: stable_infinity_categories}, pointed $\infty$-categories that satisfy the second criterion are stable. Conversely, suppose that our pointed $\infty$-category $\C$ is stable. Then, one can simply make use of the universal property of zero objects and base change (co)fibre sequences to show that all finite pullbacks and all finite pushouts must exist in $\C$. 
+                    \end{enumerate}
+                \end{proof}
+            \begin{convention}
+                Often, finite biproducts in stable $\infty$-categories shall be denoted by $\oplus$, especially when the category is abelian.
+            \end{convention}  
+            
+            We now have to mention certain notions from set theory and discuss their importance in the theory of higher category theory; in particular, notions such as accessibility of $\infty$-categories (and of course, reliant ones) can not be defined without appealing to ideas such as limit cardinals. Since this is not a book on logic nor on foundations, we shall not provide any proofs.
+            \begin{definition}[Limit cardinals] \label{def: limit_cardinal}
+                \noindent
+                \begin{enumerate}
+                    \item \textbf{(Regular cardinals):} A cardinal $\kappa$ is \textbf{regular} if and only if for any set of ordinals $\{\lambda_a \mid \forall a \in \alpha: \lambda_a < \kappa\}$ indexed by an ordinal $\alpha$, one has:
+                    $$\sum_{a \in \alpha} \lambda_a < \kappa$$ 
+                    \item \textbf{(Limit cardinals):} A \textbf{limit cardinal} is one which is not the successor of any other cardinal. More explicitly, we have the notions of \textbf{weak} and \textbf{strong} limit cardinals, which are:
+                        \begin{enumerate}
+                            \item cardinals $\kappa$ such that:
+                                $$\forall \lambda < \kappa: \operatorname{succ} (\sup \lambda) < \kappa$$
+                            and respectively,
+                            \item cardinals $\kappa$ such that:
+                                $$\forall \lambda < \kappa: 2^{\lambda} < \kappa$$
+                        \end{enumerate}
+                    \item \textbf{(Inaccessible cardinals):} A cardinal is \textbf{inaccessible} if and only if it is both a regular cardinal and a strong limit cardinal.
+                \end{enumerate}
+            \end{definition}
+            \begin{example}
+                \noindent
+                \begin{enumerate}
+                    \item The first countable infinite cardinal $\aleph_0$ is inaccessible, since it is larger than any finite sum of natural numbers (which makes it regular), and also because any natural number power of $2$ is also a natural number (which implies that these power must be smaller than $\aleph_0$, and thus $\aleph_0$ must be a strong limit cardinal).
+                    \item Interestingly, $0$ and $1$ are both inaccesible as cardinals.
+                \end{enumerate}
+            \end{example}
+            \begin{definition}[Grothendieck universes] \label{def: grothendieck_universes} \index{Grothendieck universes}
+                Following \cite[Expos\'e I, Section 0]{sga4}, a so-called \textbf{Grothendieck universe} is a non-empty set $\bbU$ enjoying the following properties:
+                    \begin{enumerate}
+                        \item $\varnothing \in \bbU$.
+                        \item If $X \in \bbU$ and if $x \in X$, then $x \in \bbU$.
+                        \item If for some set $I$, one has:
+                            $$\forall i \in I: X_i \in \bbU$$
+                        then:
+                            $$\bigcup_{i \in I} X_i \in \bbU$$
+                        \item For all $X \in \bbU$, the power set $\calP(X)$ is an element of $\bbU$.
+                    \end{enumerate}
+            \end{definition}
+            \begin{definition}[The von Neumann Hierachy] \label{def: von_neumann_hierachy}
+                \textbf{The von Neumann Hierachy} is the tower of sets:
+                    $$\scrV_0 \subset \scrV_1 \subset ...$$
+                index by the filtered category of ordinals:
+                    \begin{enumerate}
+                        \item $\scrV_0 = \varnothing$. 
+                        \item For all ordinals $\alpha$, we have:
+                            $$\scrV_{\alpha} = \bigcup_{\beta < \alpha} \calP(\scrV_{\beta})$$
+                    \end{enumerate}
+            \end{definition}
+            \begin{theorem}[Universe enlargement and inaccessible cardinals] \label{theorem: universe_enlargement}
+                A cardinal number $\kappa$ is inaccesible if and only if the $\kappa^{th}$-level $\scrV_{\kappa}$ in the von Neumann Hierachy is a Grothendieck universe. 
+            \end{theorem}
+            \begin{corollary}
+                Through this theorem, one sees that Grothendieck universes are more or less inaccessible (i.e. \say{large}) cardinals. Additionally, and arguably more importantly, the theorem tells us that by traveling upwards along the von Neumann Hierachy, one can enlarge Grothendieck universes.
+            \end{corollary}
+            
+            \begin{proposition}[Accessible stable $\infty$-category] \label{prop: accessible_stable_infinity_categories} \index{$\infty$-categories! stable! accessible} \index{$\infty$-categories! stable! ind-completions}
+                Let $\kappa$ be a regular cardinal and let $\C$ be a $\kappa$-small stable $\infty$-category. Then, its $\kappa$-ind-completion is stable as well.
+            \end{proposition}
+                \begin{proof}
+                    This is an easy consequence of the fact that filtered colimits preserve finite coproducts, and that $\C$ embeds fully faithfully into $\Ind_{\kappa}(\C)$ as a subcategory closed under finite limits and colimits. 
+                \end{proof}
+            \begin{remark} \index{$\infty$-categories! stable! accessible} \index{$\infty$-categories! stable! pro-completions}
+                If we were to replace $\Ind_{\kappa}(\C)$ in proposition \ref{prop: accessible_stable_infinity_categories} by $\Pro_{\kappa}(\C)$, we would also get a stable $\infty$-category through an application of the following equivalence of categories and remark \ref{remark: elementary_properties_of_triangulated_categories}:
+                    $$\Pro_{\kappa}(\C) \cong \Ind_{\kappa}(\C^{\op})^{\op}$$
+            \end{remark}
+            
+            \begin{proposition}[Homotopy category of triangulated categories] \label{prop: homotopy_category_of_triangulated_categories} \index{$\infty$-categories! stable! homotopy categories}
+                Let $\C$ be a triangulated $\infty$-category (or better, a stable $\infty$-category) and suppose that the suspension functor thereon:
+                    $$\suspension: \C^{\simp[1] \x \simp[1]} \to \C^{\simp[2] \x \simp[1]}$$
+                is fully faithful. Then, the homotopy category $h\C$ can also be endowed with the structure of a triangulated category (however this time with all trivial higher morphisms).
+            \end{proposition}
+                \begin{proof}
+                    This is straightforward from the universal property of homotopy categories. 
+                \end{proof}
+                
+        \subsubsection{Exact functors}
+            \begin{remark}[Functors between stable $\infty$-categories] \label{remark: functors_between_stable_infinity_categories} \index{$\infty$-categories! stable! limits} \index{$\infty$-categories! stable! exact functors}
+                \noindent
+                \begin{enumerate}
+                    \item It is a straight-forward consequence of proposition \ref{prop: stability_criteria_for_pointed_infinity_categories} that a functor (i.e. one that preserves finite limits and finite colimits):
+                        $$F: \C \to \D$$
+                    between two stable $\infty$-categories is exact if and only if it preserves distinguished triangles.
+                    \item Exact functors between them from a stable $\infty$-category $\C$ to another $\D$ span a full $\infty$-subcategory of the functor category $\infty\-\Cat(\C, \D)$.
+                    \item Stable $\infty$-categories and exact functors between them form a \textit{locally non-full} $(\infty, 2)$-subcategory of $\infty\-\Cat$, which shall be denoted by $\infty\-\Stab\Cat$ or $\Stab\Cat$. 
+                \end{enumerate}
+            \end{remark}
+            
+            \begin{proposition}[(Co)limits of stable $\infty$-categories] \label{prop: (co)limits_of_stable_infinity_categories} \index{$\infty$-categories! stable! limits} \index{$\infty$-categories! stable! colimits}
+                Let $\kappa$ be a regular cardinal. Then, the $(\infty, 1)$-category $\Stab\Cat^{< \kappa}$ of $\kappa$-small stable $\infty$-categories is complete and closed under $\kappa$-small limits. Additionally, it admits all $\kappa$-small filtered and is closed under these colimits. 
+            \end{proposition}
+                \begin{proof}
+                    
+                \end{proof}
+                
+        \subsubsection{Compact generation of stable \texorpdfstring{$\infty$}{}-categories}
+                
+        \subsubsection{\textit{Addendum}: The Lurie tensor product}
+            We now seek to endow the $(\infty, 1)$-category $\Stab\Cat^{\co\compl, \cont}$ of $(\infty, 1)$-cocomplete stable $\infty$-categories and continuous $\infty$-functors between them with the structure of a symmetric monoidal category. The \say{tensor product} shall be the so-called Lurie tensor product, which we shall denote simply by $\tensor$. 
+
+    \subsection{Homological algebra in stable \texorpdfstring{$\infty$}{}-categories}
+        \subsubsection{t-structures and their sweet little hearts}
+            \begin{remark}[Suspensions and loops] \label{remark: suspensions_and_loops}
+                Let $\C$ be a triangulated $\infty$-category and let:
+                    $$\suspension: \C^{\simp[1] \x \simp[1]} \to \C^{\simp[2] \x \simp[1]}$$
+                be the suspension functor on $\C$. By definition \ref{def: triangulated_infinity_categories}, it is the functor which extends a triangle:
+                    $$
+                        \begin{tikzcd}
+                        	x & y \\
+                        	0 & z
+                        	\arrow[from=1-1, to=2-1]
+                        	\arrow[from=1-1, to=1-2]
+                        	\arrow[from=1-2, to=2-2]
+                        	\arrow[from=2-1, to=2-2]
+                        \end{tikzcd}
+                    $$
+                via the construction of the pushout of $y \to z$ along $y \to 0$:
+                    $$
+                        \begin{tikzcd}
+                        	x & y & 0 \\
+                        	0 & z & w
+                        	\arrow[from=1-1, to=2-1]
+                        	\arrow[from=1-1, to=1-2]
+                        	\arrow[from=1-2, to=2-2]
+                        	\arrow[from=2-1, to=2-2]
+                        	\arrow[from=1-2, to=1-3]
+                        	\arrow[from=1-3, to=2-3]
+                        	\arrow[from=2-2, to=2-3]
+                        	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-3, to=1-2]
+                        \end{tikzcd}
+                    $$
+                Now, thanks to the universal property of pushouts, we can instead view the suspension functor as the functor:
+                    $$\suspension: \C^{\simp[1] \x \simp[1]} \to \C$$
+                that sends triangles $x \to y \to z$ to the suspension $\suspension x$ of its first vertex $x$ (note that this version is still right-exact, and this is crucial fact). Then, by some abstract nonsense (see \cite[Section 3]{nlab:infinity-1-limit} for instance), $\suspension$ ought to fit into the following adjoint triple:
+                    $$
+                        \begin{tikzcd}
+                        	{\C^{\simp[1] \x \simp[1]}} && {\C^{\simp[1] \x \simp[1]}}
+                        	\arrow[""{name=0, anchor=center, inner sep=0}, "\loopspace"', shift right=5, from=1-1, to=1-3]
+                        	\arrow[""{name=1, anchor=center, inner sep=0}, "\suspension", shift left=5, from=1-1, to=1-3]
+                        	\arrow[""{name=2, anchor=center, inner sep=0}, "\const"{description}, hook', from=1-3, to=1-1]
+                        	\arrow["\dashv"{anchor=center, rotate=-90}, draw=none, from=1, to=2]
+                        	\arrow["\dashv"{anchor=center, rotate=-90}, draw=none, from=2, to=0]
+                        \end{tikzcd}
+                    $$
+                Here, we take $\const: \C \to \C^{\simp[1] \x \simp[1]}$ to be the functor given by:
+                    $$
+                        x \mapsto 
+                        \begin{tikzcd}
+                        	x & x \\
+                        	0 & x
+                        	\arrow[from=1-1, to=2-1]
+                        	\arrow[from=2-1, to=2-2]
+                        	\arrow["\cong", from=1-1, to=1-2]
+                        	\arrow["\cong", from=1-2, to=2-2]
+                        \end{tikzcd}
+                    $$
+                and $\loopspace: \C^{\simp[1] \x \simp[1]} \to \C$ (called the \textbf{loop space functor}) to be the one determined by:
+                    $$
+                        \begin{tikzcd}
+                        	{\loopspace z} & x & 0 \\
+                        	0 & y & z
+                        	\arrow[from=1-2, to=1-3]
+                        	\arrow[from=1-2, to=2-2]
+                        	\arrow[from=1-3, to=2-3]
+                        	\arrow[from=2-2, to=2-3]
+                        	\arrow[from=1-1, to=2-1]
+                        	\arrow[from=2-1, to=2-2]
+                        	\arrow[from=1-1, to=1-2]
+                        	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+                        \end{tikzcd}
+                    $$
+                One thing to note is that $\loopspace$ actually only exists if $\C$ is stable, not just when it is merely triangulated, as triangulated $\infty$-categories are not assumed to have any sort of limits aside from initial objects. Another is that by the composability of adjoint pairs, we have the following induced adjunction:
+                    $$
+                        \begin{tikzcd}
+                        	{\C^{\simp[1] \x \simp[1]}} && {\C^{\simp[1] \x \simp[1]}}
+                        	\arrow[""{name=0, anchor=center, inner sep=0}, "{\loopspace \circ \const}"', shift right=2, from=1-1, to=1-3]
+                        	\arrow[""{name=1, anchor=center, inner sep=0}, "{\const \circ \suspension}", shift left=2, from=1-1, to=1-3]
+                        	\arrow["\dashv"{anchor=center, rotate=-90}, draw=none, from=1, to=0]
+                        \end{tikzcd}
+                    $$
+            \end{remark}
+        
+            \begin{definition}[t-structures] \label{def: t_structures} \index{$\infty$-categories! stable! t-structures} \index{$\infty$-categories! stable! t-structures! hearts} \index{Short exact sequences}
+                \noindent \todo[inline]{Revise this}
+                \begin{enumerate}
+                    \item \textbf{(t-structures):} The \textbf{t-structure} on a \textit{stable} $\infty$-category $\C$ is a pair of \textit{isomorphism-stable} full subcategories $\C^{\leq 0}$ and $\C^{\geq 0}$ containing the zero object $0$ such that:
+                        \begin{enumerate}
+                            \item \textbf{(Orthogonality):} For all $x \in \C^{\geq 0}$ and all $y \in \C^{\leq 0}$, the space $\C(x, \loopspace y)$ is contractible (i.e. homotopic to $0$). 
+                            
+                            Objects $y \in \C^{\leq 0}$ such that $\C(x, \loopspace y)$ is contractible for all $x \in \C_{> 0}$ span a full $\infty$-subcategory of $\C^{\leq 0}$, which we shall denote by $\C_{< 0}$. By applying the adjoint triple $(\suspension \ladjoint \const \ladjoint \loopspace)$ (cf. remark \ref{remark: suspensions_and_loops}), we can see that objects $x \in \C^{\geq 0}$ such that the space $\C(\suspension x, y)$ is contractible for all $y \in \C_{< 0}$ similarly span a full subcategory of $\C^{\geq 0}$, which is written $\C_{> 0}$. 
+                            
+                            By the definition of stable $\infty$-subcategories (cf. remark \ref{remark: elementary_properties_of_triangulated_categories}), $\C^{\leq 0}$ and $\C_{< 0}$ are stable $\infty$-subcategories of $\C$, but $\C^{\geq 0}$ and $\C_{> 0}$ are not. 
+                            \item \textbf{(Translational retro-invariance):} If a right-extension:
+                                $$
+                                    \begin{tikzcd}
+                                    	x & y & 0 \\
+                                    	0 & z & w
+                                    	\arrow[from=2-1, to=2-2]
+                                    	\arrow[from=1-2, to=2-2]
+                                    	\arrow[from=1-1, to=1-2]
+                                    	\arrow[from=1-1, to=2-1]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+                                    	\arrow[from=2-2, to=2-3]
+                                    	\arrow[from=1-2, to=1-3]
+                                    	\arrow[from=1-3, to=2-3]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-3, to=1-2]
+                                    \end{tikzcd}
+                                $$
+                            of a cofibre sequence is an object of $(\C^{\geq 0})^{\simp[2] \x \simp[1]}$, then the cofibre sequence:
+                                $$
+                                    \begin{tikzcd}
+                                    	x & y \\
+                                    	0 & z
+                                    	\arrow[from=2-1, to=2-2]
+                                    	\arrow[from=1-2, to=2-2]
+                                    	\arrow[from=1-1, to=1-2]
+                                    	\arrow[from=1-1, to=2-1]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+                                    \end{tikzcd}
+                                $$
+                            itself is an object of $(\C^{\geq 0})^{\simp[1] \x \simp[1]}$ (actually, this extends to all right-extensions of triangles, because they all factor through cofibre sequences thanks to the universal property of colimits). 
+                            
+                            Dually, if the left-extension of a fibre sequence:
+                                $$
+                                    \begin{tikzcd}
+                                    	{\loopspace z} & x & 0 \\
+                                    	0 & y & z
+                                    	\arrow[from=1-3, to=2-3]
+                                    	\arrow[from=2-2, to=2-3]
+                                    	\arrow[from=1-2, to=2-2]
+                                    	\arrow[from=1-2, to=1-3]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-2, to=2-3]
+                                    	\arrow[from=1-1, to=2-1]
+                                    	\arrow[from=2-1, to=2-2]
+                                    	\arrow[from=1-1, to=1-2]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+                                    \end{tikzcd}
+                                $$
+                            is an object of $(\C^{\leq 0})^{\simp[2] \x \simp[1]}$, then that fibre sequence itself:
+                                $$
+                                    \begin{tikzcd}
+                                    	x & 0 \\
+                                    	y & z
+                                    	\arrow[from=1-2, to=2-2]
+                                    	\arrow[from=2-1, to=2-2]
+                                    	\arrow[from=1-1, to=2-1]
+                                    	\arrow[from=1-1, to=1-2]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+                                    \end{tikzcd}
+                                $$
+                            is an object of $(\C^{\leq 0})^{\simp[1] \x \simp[1]}$. This also applies to triangles which may not be fibre sequences. 
+                            \item \textbf{(Torsion):} For all objects $x \in \C$, there exists a (co)fibre sequence in $\C^{\simp[1] \x \simp[1]}$:
+                                $$
+                                    \begin{tikzcd}
+                                    	{x'} & 0 \\
+                                    	x & {x''}
+                                    	\arrow[from=1-2, to=2-2]
+                                    	\arrow[from=2-1, to=2-2]
+                                    	\arrow[from=1-1, to=2-1]
+                                    	\arrow[from=1-1, to=1-2]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+                                    \end{tikzcd}
+                                $$
+                            wherein $x' \in \C^{\geq 0}$, whose left and right-extensions are both zero:
+                                $$
+                                    \begin{tikzcd}
+                                    	0 & {x'} & 0 \\
+                                    	0 & x & {x''} \\
+                                    	& 0 & 0
+                                    	\arrow[from=1-3, to=2-3]
+                                    	\arrow[from=2-2, to=2-3]
+                                    	\arrow[from=1-2, to=2-2]
+                                    	\arrow[from=1-2, to=1-3]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-2, to=2-3]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-3, to=1-2]
+                                    	\arrow[from=2-2, to=3-2]
+                                    	\arrow[from=3-2, to=3-3]
+                                    	\arrow[from=2-3, to=3-3]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-3, to=2-2]
+                                    	\arrow[from=1-1, to=2-1]
+                                    	\arrow[from=2-1, to=2-2]
+                                    	\arrow[from=1-1, to=1-2]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+                                    \end{tikzcd}
+                                $$
+                            (note how this implies that the mapping spaces $\C(x, \loopspace x'')$ and $\C(\suspension x', x)$ are contractible, and hence $x' \in \C^{\geq 0}$ and $x'' \in \C_{< 0}$); in other words, $(\C^{\geq 0}, \C^{\leq 0})$ is a $t$-structure if $(\C_{> 0}, \C_{< 0})$ is a (homotopical) \href{https://ncatlab.org/joyalscatlab/published/Factorisation+systems}{\underline{factorisation system}}, and in fact, an epi-mono factorisation system thanks to the universal property of zero objects. Such a sequence is known as a \textbf{short exact sequence}. 
+                            
+                            Also, note that in the situation above, we have the following right and left-extensions:
+                                $$
+                                    \begin{tikzcd}
+                                    	0 & {x'} & 0 \\
+                                    	0 & x & {x''}
+                                    	\arrow[from=1-3, to=2-3]
+                                    	\arrow[from=2-2, to=2-3]
+                                    	\arrow[from=1-2, to=2-2]
+                                    	\arrow[from=1-2, to=1-3]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-3, to=1-2]
+                                    	\arrow[from=1-1, to=2-1]
+                                    	\arrow[from=2-1, to=2-2]
+                                    	\arrow[from=1-1, to=1-2]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+                                    \end{tikzcd}
+                                $$
+                                $$
+                                    \begin{tikzcd}
+                                    	{x'} & 0 \\
+                                    	x & {x''} \\
+                                    	0 & 0
+                                    	\arrow[from=1-2, to=2-2]
+                                    	\arrow[from=2-1, to=2-2]
+                                    	\arrow[from=1-1, to=2-1]
+                                    	\arrow[from=1-1, to=1-2]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+                                    	\arrow[from=2-2, to=3-2]
+                                    	\arrow[from=2-1, to=3-1]
+                                    	\arrow[from=3-1, to=3-2]
+                                    	\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-1, to=3-2]
+                                    \end{tikzcd}
+                                $$
+                        \end{enumerate}
+                    \item \textbf{(Hearts of t-structures):} It is not hard to see that within a stable $\infty$-category $\C$ equipped with some choice of t-structure $(\C^{\geq 0}, \C^{\leq 0})$, short exact sequences would form an \textit{isomorphism-stable} full $\infty$-subcategory of $\C^{\simp[1] \x \simp[1]}$, which we shall call the \textbf{heart} of its t-structure. 
+                \end{enumerate}
+                Note how we are indexing \textit{homologically}.
+            \end{definition}
+            \begin{remark}
+                Let $\C$ be a stable $\infty$-category. Then, its $t$-structure can be thought of as consisting of two subcategories spanned, respectively, by \say{complexes} with vanishing positive cohomlogies (e.g. projective resolutions) and those with vanishing negative cohomologies (e.g. injective resolutions). The heart of that very $t$-structure, therefore, shall be spanned by \say{complexes} concentrated in (co)homological degree $0$, i.e. \say{exact sequences}. 
+            \end{remark}
+            
+            \begin{proposition}[t-structures and localisations] \label{prop: t_structures_and_localisations}
+                Let $\C$ be a stable $\infty$-category and let $(\C^{\geq 0}, \C^{\leq 0})$ be a t-structure thereon with corresponding canonical fully faithful exact embeddings $\iota^{\geq 0}$ and $\iota^{\leq 0}$. Then, there exists the following composable adjunctions exhibiting $\C^{\leq 0}$ and $\C^{\geq 0}$ as a reflective and a coreflective $\infty$-subcategory of $\C$ respectively:
+                    $$
+                        \begin{tikzcd}
+                        	{\C^{\leq 0}} & \C & {\C^{\geq 0}}
+                        	\arrow[""{name=0, anchor=center, inner sep=0}, "{\iota^{\leq 0}}"', shift right=2, hook, from=1-1, to=1-2]
+                        	\arrow[""{name=1, anchor=center, inner sep=0}, "{\tau^{\leq 0}}"', shift right=2, from=1-2, to=1-1]
+                        	\arrow[""{name=2, anchor=center, inner sep=0}, "{\tau^{\geq 0}}"', shift right=2, from=1-2, to=1-3]
+                        	\arrow[""{name=3, anchor=center, inner sep=0}, "{\iota^{\geq 0}}"', shift right=2, hook', from=1-3, to=1-2]
+                        	\arrow["\dashv"{anchor=center, rotate=-90}, draw=none, from=1, to=0]
+                        	\arrow["\dashv"{anchor=center, rotate=-90}, draw=none, from=3, to=2]
+                        \end{tikzcd}
+                    $$
+                We call the functors $\tau^{\geq 0}$ and $\tau^{\leq 0}$ the \textbf{$\geq 0$-truncation} and the \textbf{$\leq 0$-truncation} respectively.
+            \end{proposition}
+                \begin{proof}
+                    \noindent
+                    \begin{enumerate}
+                        \item \textbf{($(\iota^{\geq 0} \ladjoint \tau^{\geq 0})$):}    
+                        \item \textbf{($(\tau^{\leq 0} \ladjoint \iota^{\leq 0})$):} 
+                    \end{enumerate}
+                \end{proof}
+            \begin{corollary}[Cooking up short exact sequences using truncations] \label{coro: short_exact_sequences_and_truncations}
+                Suppose that $x$ is an object of a stable $\infty$-category $\C$, and let $(\C^{\geq 0}, \C^{\leq 0})$ be a t-structure thereon. Then, the heart of this t-structure can be given by:
+                    $$
+                        \begin{aligned}
+                            \C^{\heart} & \cong \iota^{\leq 0} \circ \tau^{\geq 0} \C^{\leq 0}
+                            \\
+                            & \cong \iota^{\geq 0} \circ \tau^{\leq 0} \C^{\geq 0} 
+                            \\
+                            & \cong \tau^{\geq 0} \circ \iota^{\geq 0} \circ \tau^{\leq 0} \circ \iota^{\leq 0} \C 
+                            \\
+                            & \cong \tau^{\leq 0} \circ \iota^{\leq 0} \circ \tau^{\geq 0} \circ \iota^{\geq 0} \C
+                        \end{aligned}
+                    $$
+                In other words, the composite adjunction $(\tau^{\leq 0} \circ \iota^{\geq 0} \ladjoint \tau^{\geq 0} \circ \iota^{\leq 0})$ is an adjoint equivalence over $\C^{\heart}$. 
+            \end{corollary}
+                \begin{proof}
+                    
+                \end{proof}
+            
+            \begin{theorem}[\textcolor{red}{\underline{IMPORTANT}} Hearts are abelian] \label{theorem: hearts_are_abelian} \index{$\infty$-categories! stable! t-structures! hearts}
+                The heart of the t-structure of a stable $\infty$-category is an abelian $\infty$-category.
+            \end{theorem}
+                \begin{proof}
+                    
+                \end{proof}
+                
+        \subsubsection{Spectral sequences}
+        
+        \subsubsection{The Dold-Kan Correspondence}
+        
+    \subsection{Derived categories}
+        \subsubsection{dg-categories as linear stable \texorpdfstring{$\infty$}{}-categories}
+        
+        \subsubsection{Derived categories}
+        
+        \subsubsection{Grothendieck categories}
+        
+        \subsubsection{Serre subcategories}
+    
+        \subsubsection{Constructibility and perverse sheaves}
+
+\section{\texorpdfstring{$\infty$}{}-operads; algebras and modules over operads} \label{section: algebras_and_modules_over_operads}
+    \subsection{\texorpdfstring{$\infty$}{}-operads and operadic-monoidal \texorpdfstring{$\infty$}{}-categories} \label{subsection: operads}
+        \subsubsection{\texorpdfstring{$\infty$}{}-operads}
+        
+        \subsubsection{Operadic-monoidal \texorpdfstring{$\infty$}{}-categories}
+    
+    \subsection{Algebras and monoids over \texorpdfstring{$\infty$}{}-operads}
+    
+    \subsection{Modules over algebras and modules over monoids}
+
+\section{Little cubes and factorisability}
+
+\section{Functorial calculus}
+
+\section{Algebra with \texorpdfstring{$\bbE_k$}{}-rings}
