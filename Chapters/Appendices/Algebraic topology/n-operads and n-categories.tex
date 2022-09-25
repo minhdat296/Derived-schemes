@@ -1,0 +1,67 @@
+\section{\texorpdfstring{$n$}{}-operads and \texorpdfstring{$n$}{}-categories}
+    \subsection{Monoidal categories; enrichments}
+        \subsubsection{Classical monoidal categories}
+            \begin{definition}[Monoidal categories] \label{def: monoidal_categories} \index{Monoidal categories}
+                A monoidal category is a quintuple $(\V, \tensor, 1, \alpha, (\lambda, \rho))$ of:
+                    \begin{enumerate}
+                        \item a category $\V$;
+                        \item a bifunctor $\tensor: \V \x \V \to \V$;
+                        \item a distinguished object $1 \in \V$ - called the \textbf{unit} - which we shall view as a functor $\eta: \pt \to \V$ from the terminal category;
+                        \item a natural isomorphism of functors - called the \textbf{associator} - as follows:
+                            $$
+                                \begin{tikzcd}
+                                	{(\V \x \V) \x \V} && {\V \x (\V \x \V)} \\
+                                	\\
+                                	{\V \x \V} && {\V \x \V} \\
+                                	& \V
+                                	\arrow["{\tensor \x \id_{\V}}"', from=1-1, to=3-1]
+                                	\arrow["\tensor"', from=3-1, to=4-2]
+                                	\arrow["\tensor", from=3-3, to=4-2]
+                                	\arrow["{\id_{\V} \x \tensor }", from=1-3, to=3-3]
+                                	\arrow["\cong", from=1-1, to=1-3]
+                                	\arrow[""{name=0, anchor=center, inner sep=0}, "{(- \tensor -) \tensor -}"{description}, from=1-1, to=4-2]
+                                	\arrow[""{name=1, anchor=center, inner sep=0}, "{- \tensor (- \tensor -)}"{description}, from=1-3, to=4-2]
+                                	\arrow["\alpha", shorten <=26pt, shorten >=26pt, Rightarrow, from=0, to=1]
+                                \end{tikzcd}
+                            $$
+                        \item natural isomorphisms $\lambda$ and $\rho$ - known, respectively, as the \textbf{left and right-unitors} - as follows:
+                            $$
+                                \begin{tikzcd}
+                                	{\V \x \pt} & {\V \x \V} & {\pt \x \V} \\
+                                	\V & \V & \V
+                                	\arrow["{\tensor}"{description}, from=1-2, to=2-2]
+                                	\arrow["{\eta \x \id_{\V}}"', from=1-3, to=1-2]
+                                	\arrow["{\id_{\V} \x \eta}", from=1-1, to=1-2]
+                                	\arrow["{\id_{\V}}"', from=2-1, to=2-2]
+                                	\arrow["{\pr_1}"', from=1-1, to=2-1]
+                                	\arrow["{\pr_2}", from=1-3, to=2-3]
+                                	\arrow["{\id_{\V}}", from=2-3, to=2-2]
+                                	\arrow["\lambda"', shorten <=13pt, shorten >=13pt, Rightarrow, from=1-2, to=2-1]
+                                	\arrow["\rho", shorten <=13pt, shorten >=13pt, Rightarrow, from=1-2, to=2-3]
+                                \end{tikzcd}
+                            $$
+                        (note that the functors $\pr_1: \V \x \pt \to \V$ and $\pr_2: \pt \x \V \to \V$ are equivalences \textit{a priori}, thanks to the universal property of the terminal objects and that of products).
+                    \end{enumerate}
+                
+            \end{definition}
+            \begin{definition}[Lax-monoidal categories] \label{def: lax_monoidal_categories} \index{Monoidal categories! lax}
+                Let $(\V, \tensor, 1, \alpha, (\lambda, \rho))$ a quintuple as in definition \ref{def: monoidal_categories}, but now, suppose that $\alpha: (- \tensor -) \tensor - \to - \tensor (- \tensor -)$ is a non-invertible $2$-cell. Then, this quintuple will define a so-called \textbf{lax-monoidal category} if and only if 
+            \end{definition}
+            \begin{definition}[Non-unital monoidal categories] \label{non_unital_monoidal_categories} \index{Monoidal categories! non-unital}
+                
+            \end{definition}
+            
+            \begin{definition}[Braidings and symmetries] \label{def: braided_and_symmetric_monoidal_categories} \index{Monoidal categories! braided} \index{Monoidal categories! symmetric}
+                
+            \end{definition}
+            
+        \subsubsection{Categories enriched over monoidal categories; 2-categories}
+        
+        \subsubsection{Unbiased monoidal categories}
+    
+    \subsection{Operads and coloured operads}
+    
+    \subsection{Weak \texorpdfstring{$n$}{}-categories}
+        \subsubsection{Globular operads}
+        
+        \subsubsection{The many definitions of weak \texorpdfstring{$n$}{}-categories}

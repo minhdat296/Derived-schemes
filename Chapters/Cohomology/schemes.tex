@@ -1,9 +1,13 @@
 \section{Cohomology of schemes}
     \subsection{Zariski cohomology of quasi-coherent sheaves}
-        \subsubsection{Serre's Vanishing Theorem}
-            \begin{lemma}[Vanishing on standard open subsets] \label{lemma: serre_vanishing_on_standard_open_subsets}
-                Let $X$ be a scheme with a choice of standard Zariski-open covering $\{U_i\}_{i \in I}$, and let $\calF \in \Ob(\QCoh(X))$ be a quasi-coherent $\calO_X$-module. Then $H^i_{\Zar}(U_i, \calF) \cong 0$ for all $i > 0$.
-            \end{lemma}
+        \subsubsection{Serre's Vanishing Theorems}
+            \begin{definition}[Zariski cohomology] \label{def: zariski_cohomology}
+                The \textbf{Zariski cohomology} of a sheaf of $\calO_X$-modules $\calF$ on a given scheme $X$, denoted by $H^*_{\Zar}(X, \calF)$, is nothing but the sheaf cohomology of $\calF$ on the (small) Zariski site $(\Sch_{/X})_{\Zar}$. 
+            \end{definition}
+            
+            \begin{theorem}[Serre's cohomological affineness criterion] \label{theorem: serre_cohomological_affineness_criterion}
+                A quasi-compact scheme $X$ is affine if $H^1_{\Zar}(X, \calI) \cong 0$ for all quasi-coherent ideal sheaves $\calI \subseteq \calO_X$.
+            \end{theorem}
                 \begin{proof}
                     
                 \end{proof}
